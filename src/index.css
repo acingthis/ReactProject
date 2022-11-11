@@ -1,13 +1,66 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(130deg, rgba(111,103,241,1) 0%, rgba(31,30,147,1) 60%, rgba(9,9,121,1) 100%) no-repeat;
+  height: 97.75vh;
+  width: 96vw;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+ul {
+  width: 100%;
+  list-style-type: none;
+  margin: 0;
+  overflow: hidden;
+  background-color: #071016;
+  color: white;
+}
+
+.PlayerCount {
+  float: left;
+  padding: 14px 16px;
+}
+
+.EndGameButton {
+  float: right;
+  padding: 25px 20px;
+}
+
+
+
+.Cards {
+  max-width: 75%;
+  position: relative;
+  margin: auto;
+}
+
+.Player{
+  background-color: orange;
+  width: 40%;
+  height: 75vh;
+  margin: 20px 20px;
+  border: 20px;
+  border-style: solid;
+  border-color: black;
+}
+
+.Left {
+  float: left;
+}
+
+.Right {
+  float: right;
+}
+
+.Choices {
+  height: 40px;
+  width: 25%;
+  background: none;
+  
+}
+
+.center {
+  margin: 0;
+  position: relative;
+  top: 50%;
+  left: 85%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
