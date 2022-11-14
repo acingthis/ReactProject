@@ -2,28 +2,28 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
-
-//ToDo
-function EndGame(){
-  /*
-  let Winner = "";
-
-  if (Player1Cards === Player2Cards)
+let Winner = "";
+function EndGame(Players){
+  
+  if (Players.Player1 === Players.Player2)
   {
     //Tie
     Winner = "Tie";
+    console.log("Tie")
   }
-  else if (Player1Cards > Player2Cards)
+  else if (Players.Player1 > Players.Player2)
   {
     //Player1
     Winner = "Player1";
+    console.log("Player1")
   }
   else
   {
     //Player2
     Winner = "Player2";
+    console.log("Player2")
   }
-  */
+  
 }
 
 function Nav(Players) {
@@ -33,14 +33,30 @@ function Nav(Players) {
       <ul>
         <li className='PlayerCount'><p>Player 1: {Players.Player1}</p></li>
         <li className='PlayerCount'><p>Player 2: {Players.Player2}</p></li>
-        <li className='TieCount'><p>Tie Stack: </p></li>
-        <li className='Winner'><p>Winner:</p></li>
-        <li className='EndGameButton'><button onClick={() => <EndGame/>}>End Game</button></li>
+        <li className="TieCount"><p>Tie Stack: </p></li>
+        <li className="Winner"><p>Winner: {Winner}</p></li>
+        <li className='EndGameButton'><button onClick={() => EndGame(Players)}>End Game</button></li>
       </ul>
     </div>
   );
 } 
 
+
+function FetchAPI(Players) {
+
+  console.log("Fetch")
+  console.log(Players)
+
+  console.log("Fetchy")
+
+  useEffect(() => {
+    fetch("http://localhost:8080/home/filmId/" + Players.index)
+        .then((res) => res.json())
+        .then((result) => {
+            Players.setPlayer(result);
+    })
+  },[]);
+}
 
 function GetCard(index) {
 
@@ -84,10 +100,37 @@ function GetCard(index) {
   );
 }
 
-function Option(choice) {
+function Option(choice,P1,P2) {
+
+  //Doesn't work!!!!!
+
+  const [Player1, setPlayer1] = useState(null);
+  const [Player2, setPlayer2] = useState(null);
+
+  <><FetchAPI index={P1[0]} setPlayer={setPlayer1} />
+  <FetchAPI index={P2[0]} setPlayer={setPlayer2} /></>
+  
+
+  //let Player1 = FetchAPI (P1[0],"rating");
+  console.log(Player1)
+
+  console.log("Player1")
+  console.log(Player1.rating)
+
+
   if (choice === "rating")
   {
     console.log("rating")
+    if(P1[0] > P2[0])
+    {
+      P1[25] = P2[0];
+      P1[26] = P1[0];
+    }
+    else
+    {
+      P2[25] = P1[0];
+      P2[26] = P2[0];
+    }
   }
   else if (choice === "length")
   {
@@ -109,25 +152,29 @@ function Option(choice) {
   {
     console.log("None")
   }
-
 }
 
 function Cards(CardData) {
 
-  const CardIndexes = {};
+  const P1Indexs = {};
+  const P2Indexs = {};
 
   let CardNum = CardData.CardNum;
   let rand = Math.floor( Math.random() * ((1000 -CardNum) - 1) + 1);
 
-  for(let i = 0; i < CardNum; i++)
+  for(let i = 0; i < CardNum/2; i++)
   {
-    CardIndexes[i] = rand + i;
+    P1Indexs[i] = rand + i;
+  }
+  for(let i = 0; i < CardNum/2; i++)
+  {
+    P2Indexs[i] = rand + i + (CardNum/2);
   }
   
   return(
     <div className='Cards'>
       <div className='Player Left'>
-        <GetCard index={CardIndexes[0]}/>
+        <GetCard index={P1Indexs[0]}/>
       </div>
       <div className='Player Right'>
         <div className='CardData'>
@@ -136,11 +183,11 @@ function Cards(CardData) {
         <hr/>
         </div>
         <div className='center'>
-          <button className='Choices' onClick={() => Option("rating")}>Rating</button> <br/>
-          <button className='Choices' onClick={() => Option("length")}>Length</button> <br/>
-          <button className='Choices' onClick={() => Option("rate")}>Rental Rate</button> <br/>
-          <button className='Choices' onClick={() => Option("duration")}>Rental Duration</button> <br/>
-          <button className='Choices' onClick={() => Option("cost")}>Replacement Cost</button> <br/>
+          <button className='Choices' onClick={() => Option("rating",P1Indexs,P2Indexs)}>Rating</button> <br/>
+          <button className='Choices' onClick={() => Option("length",P1Indexs,P2Indexs)}>Length</button> <br/>
+          <button className='Choices' onClick={() => Option("rate",P1Indexs,P2Indexs)}>Rental Rate</button> <br/>
+          <button className='Choices' onClick={() => Option("duration",P1Indexs,P2Indexs)}>Rental Duration</button> <br/>
+          <button className='Choices' onClick={() => Option("cost",P1Indexs,P2Indexs)}>Replacement Cost</button> <br/>
         </div> 
       </div>
     </div>
@@ -162,7 +209,7 @@ function Container() {
   
   return(
     <div>
-      <Nav Player1={Player1} Player2={Player2}/>
+      <Nav Player1={Player1} setPlayer1={setPlayer1} Player2={Player2} setPlayer2={setPlayer2}/>
       <Cards CardNum={CardNum}/>
     </div>
   );
