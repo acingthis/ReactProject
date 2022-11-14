@@ -18,6 +18,18 @@ ul {
   padding: 14px 16px;
 }
 
+.TieCount {
+  float: left;
+  padding: 14px 16px;
+  display: none;
+}
+
+.Winner {
+  float: left;
+  padding: 14px 16px;
+  display: none;
+}
+
 .EndGameButton {
   float: right;
   padding: 25px 20px;
@@ -50,8 +62,12 @@ ul {
   float: right;
 }
 
+#RightPlayer {
+  margin: 10px;
+}
+
 .Choices {
-  height: 50px;
+  height: 60px;
   width: 35%;
   background: none;
   color: white;
@@ -59,10 +75,22 @@ ul {
   border: none;
 }
 
+.Choices:hover {
+  background: rgb(31, 31, 31);
+}
+
+.Choices:active {
+  background: rgb(0, 0, 0);
+}
+
+.CardData {
+  margin: 10px;
+}
+
 .center {
   margin: 0;
   position: relative;
-  top: 50%;
+  top: 40%;
   left: 85%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
