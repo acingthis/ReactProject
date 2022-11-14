@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
@@ -22,8 +22,52 @@ function Nav() {
   );
 } 
 
+
 function FetchAPI() {
 
+  const [data, setData] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+
+  console.log("Load");
+
+  useEffect(() => {
+    console.log("Use");
+    fetch("http://localhost:8080/home/filmId/1")
+        .then((res) => res.json())
+        .then((result) => {
+            console.log(result);
+            setData(result);
+            setLoaded(true);
+    })
+  },[])
+
+  if (!loaded)
+  {
+    return (
+      <div className='center'>
+        <p>Data unavailable</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className=''>
+      <h1>{data.title}</h1>
+      <p>{data.description}</p>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <div className='center'>
+        <p className='Data'>Rating:           {data.rating}</p>
+        <p className='Data'>Length:           {data.length}</p>
+        <p className='Data'>Rental Rate:      {data.rentalRate}</p>
+        <p className='Data'>Rental Duration:  {data.rentalDuration}</p>
+        <p className='Data'>Replacement Cost: {data.replacementCost}</p>
+      </div>
+    </div>
+  );
 }
 
 function Cards() {
@@ -35,11 +79,11 @@ function Cards() {
       </div>
       <div className='Player Right'>
         <div className='center'>
-        <button className='Choices'>Rating</button> <br/>
-        <button className='Choices'>Length</button> <br/>
-        <button className='Choices'>Rental Rate</button> <br/>
-        <button className='Choices'>Rental Duration</button> <br/>
-        <button className='Choices'>Year</button> <br/>
+          <button className='Choices'>Rating</button> <br/>
+          <button className='Choices'>Length</button> <br/>
+          <button className='Choices'>Rental Rate</button> <br/>
+          <button className='Choices'>Rental Duration</button> <br/>
+          <button className='Choices'>Replacement Cost</button> <br/>
         </div> 
       </div>
     </div>
@@ -56,6 +100,8 @@ function Container() {
   );
 }
 
+
+//export default Container;
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
