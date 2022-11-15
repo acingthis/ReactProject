@@ -156,6 +156,22 @@ function Rating(PRating)
   return RatingNum;
 }
 
+function P1Win(P1,P2,CardData)
+{
+  P1[P1.length] = P2[0];
+  P1[P1.length] = P1[0];
+  CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
+  CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
+}
+
+function P2Win(P1,P2,CardData)
+{
+  P2[P2.length] = P1[0];
+  P2[P2.length] = P2[0];
+  CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
+  CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
+}
+
 function StackDecks (choice,P1,Player1,P2,Player2,setChanged,CardData){
 
   if (choice === "rating")
@@ -164,85 +180,55 @@ function StackDecks (choice,P1,Player1,P2,Player2,setChanged,CardData){
     let P2Rating = Rating(Player2.rating);
     if(P1Rating > P2Rating)
     {
-      P1[P1.length] = P2[0];
-      P1[P1.length] = P1[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
+      P1Win(P1,P2,CardData)
     }
     else
     {
-      P2[P2.length] = P1[0];
-      P2[P2.length] = P2[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
+      P2Win(P1,P2,CardData)
     }
   }
   else if (choice === "length")
   {
     if(Player1.length > Player2.length)
     {
-      P1[P1.length] = P2[0];
-      P1[P1.length] = P1[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
+      P1Win(P1,P2,CardData)
     }
     else
     {
-      P2[P2.length] = P1[0];
-      P2[P2.length] = P2[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
+      P2Win(P1,P2,CardData)
     }
   }
   else if (choice === "rate")
   {
     if(Player1.rentalRate > Player2.rentalRate)
     {
-      P1[P1.length] = P2[0];
-      P1[P1.length] = P1[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
+      P1Win(P1,P2,CardData)
     }
     else
     {
-      P2[P2.length] = P1[0];
-      P2[P2.length] = P2[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
+      P2Win(P1,P2,CardData)
     }
   }
   else if (choice === "duration")
   {
     if(Player1.rentalDuration > Player2.rentalDuration)
     {
-      P1[P1.length] = P2[0];
-      P1[P1.length] = P1[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
+      P1Win(P1,P2,CardData)
     }
     else
     {
-      P2[P2.length] = P1[0];
-      P2[P2.length] = P2[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
+      P2Win(P1,P2,CardData)
     }
   }
   else if (choice === "cost")
   {
     if(Player1.replacementCost > Player2.replacementCost)
     {
-      P1[P1.length] = P2[0];
-      P1[P1.length] = P1[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
+      P1Win(P1,P2,CardData)
     }
     else
     {
-      P2[P2.length] = P1[0];
-      P2[P2.length] = P2[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
+      P2Win(P1,P2,CardData)
     }
   }
   setChanged(null)
