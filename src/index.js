@@ -3,30 +3,42 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 let Winner = "";
-function EndGame(Players){
-  
+function EndGame(Players) {
+
   if (Players.Player1 === Players.Player2)
   {
     //Tie
     Winner = "Tie";
-    console.log("Tie")
+    console.log("Tie");
+    alert("The Game is a Tie");
   }
   else if (Players.Player1 > Players.Player2)
   {
     //Player1
     Winner = "Player1";
-    console.log("Player1")
+    console.log("Player1");
+    alert("PLayer 1, You have Won");
   }
   else
   {
     //Player2
     Winner = "Player2";
-    console.log("Player2")
+    console.log("Player2");
+    alert("PLayer 2, You have Won");
   }
-  
+
 }
 
 function Nav(Players) {
+
+  if (Players.start && (Players.Player1 === 0 || Players.Player2 === 0))
+  {
+    EndGame(Players);
+  }
+  else
+  {
+    Players.setStart(true);
+  }
 
   return(
     <div className='Nav'>
@@ -310,7 +322,7 @@ function Cards(CardData) {
         <div className='Player Right'>
           <div className='CardData'>
           <hr/>
-          <h2 id='RightPlayer'>Choose a value you wish to use</h2>
+          <h2 id='RightPlayer'>What value do you think will win?</h2>
           <hr/>
           </div>
           <div className='center'>
@@ -338,10 +350,11 @@ function Container() {
     setPlayer2(CardNum/2)
   },[])
 
+  const [start, setStart] = useState(false);
   
   return(
     <div>
-      <Nav Player1={Player1} setPlayer1={setPlayer1} Player2={Player2} setPlayer2={setPlayer2}/>
+      <Nav Player1={Player1} setPlayer1={setPlayer1} Player2={Player2} setPlayer2={setPlayer2} start={start} setStart={setStart}/>
       <Cards CardNum={CardNum} CurrentPlayer1={Player1} setCurrentPlayer1={setPlayer1} CurrentPlayer2={Player2} setCurrentPlayer2={setPlayer2}/>
     </div>
   );
