@@ -42,20 +42,13 @@ function Nav(Players) {
 } 
 
 
-function FetchAPI(Players) {
+function FetchAPI(index,setPlayer) {
 
-  console.log("Fetch")
-  console.log(Players)
-
-  console.log("Fetchy")
-
-  useEffect(() => {
-    fetch("http://localhost:8080/home/filmId/" + Players.index)
+    fetch("http://localhost:8080/home/filmId/" + index)
         .then((res) => res.json())
         .then((result) => {
-            Players.setPlayer(result);
+            setPlayer(result);
     })
-  },[]);
 }
 
 function GetCard(index) {
@@ -100,75 +93,153 @@ function GetCard(index) {
   );
 }
 
-function Option(choice,P1,P2) {
+function Option(choice,P1,setPlayer1,P2,setPlayer2,setChanged) {
 
-  //Doesn't work!!!!!
+  FetchAPI (P1[0],setPlayer1);
+  FetchAPI (P2[0],setPlayer2);
 
-  const [Player1, setPlayer1] = useState(null);
-  const [Player2, setPlayer2] = useState(null);
+  setChanged(choice);
+}
 
-  <><FetchAPI index={P1[0]} setPlayer={setPlayer1} />
-  <FetchAPI index={P2[0]} setPlayer={setPlayer2} /></>
-  
+function Rating(PRating)
+{
+  let RatingNum = 0;
 
-  //let Player1 = FetchAPI (P1[0],"rating");
-  console.log(Player1)
+  if (PRating === "G")
+  {
+    RatingNum = 1;
+  }
+  else if (PRating === "PG")
+  {
+    RatingNum = 2;
+  }
+  else if (PRating === "PG-13")
+  {
+    RatingNum = 3;
+  }
+  else if (PRating === "R")
+  {
+    RatingNum = 4;
+  }
+  else if (PRating === "NC-17")
+  {
+    RatingNum = 5;
+  }
 
-  console.log("Player1")
-  console.log(Player1.rating)
+  return RatingNum;
+}
 
+function StackDecks (choice,P1,Player1,P2,Player2,setChanged){
 
   if (choice === "rating")
   {
+    let P1Rating = Rating(Player1.rating);
+    let P2Rating = Rating(Player2.rating);
     console.log("rating")
-    if(P1[0] > P2[0])
+    console.log(P1Rating)
+    if(P1Rating > P2Rating)
     {
-      P1[25] = P2[0];
-      P1[26] = P1[0];
+      P1[P1.length] = P2[0];
+      P1[P1.length] = P1[0];
     }
     else
     {
-      P2[25] = P1[0];
-      P2[26] = P2[0];
+      P2[P2.length] = P1[0];
+      P2[P2.length] = P2[0];
     }
   }
   else if (choice === "length")
   {
     console.log("length")
+    if(Player1.length > Player2.length)
+    {
+      P1[P1.length] = P2[0];
+      P1[P1.length] = P1[0];
+    }
+    else
+    {
+      P2[P2.length] = P1[0];
+      P2[P2.length] = P2[0];
+    }
   }
   else if (choice === "rate")
   {
     console.log("rate")
+    if(Player1.rentalRate > Player2.rentalRate)
+    {
+      P1[P1.length] = P2[0];
+      P1[P1.length] = P1[0];
+    }
+    else
+    {
+      P2[P2.length] = P1[0];
+      P2[P2.length] = P2[0];
+    }
   }
   else if (choice === "duration")
   {
     console.log("duration")
+    if(Player1.rentalDuration > Player2.rentalDuration)
+    {
+      P1[P1.length] = P2[0];
+      P1[P1.length] = P1[0];
+    }
+    else
+    {
+      P2[P2.length] = P1[0];
+      P2[P2.length] = P2[0];
+    }
   }
   else if (choice === "cost")
   {
     console.log("cost")
+    if(Player1.replacementCost > Player2.replacementCost)
+    {
+      P1[P1.length] = P2[0];
+      P1[P1.length] = P1[0];
+    }
+    else
+    {
+      P2[P2.length] = P1[0];
+      P2[P2.length] = P2[0];
+    }
   }
   else
   {
     console.log("None")
   }
+  setChanged(null)
 }
 
 function Cards(CardData) {
+  
+  const [Player1, setPlayer1] = useState(null);
+  const [Player2, setPlayer2] = useState(null);
+  const [Changed, setChanged] = useState(null);
 
   const P1Indexs = {};
   const P2Indexs = {};
 
-  let CardNum = CardData.CardNum;
-  let rand = Math.floor( Math.random() * ((1000 -CardNum) - 1) + 1);
+  const [Setup, setSetup] = useState(false);
 
-  for(let i = 0; i < CardNum/2; i++)
+  if (!Setup)
   {
-    P1Indexs[i] = rand + i;
+    let CardNum = CardData.CardNum;
+    let rand = Math.floor( Math.random() * ((1000 -CardNum) - 1) + 1);
+
+    for(let i = 0; i < CardNum/2; i++)
+    {
+      P1Indexs[i] = rand + i;
+    }
+    for(let i = 0; i < CardNum/2; i++)
+    {
+      P2Indexs[i] = rand + i + (CardNum/2);
+    }
   }
-  for(let i = 0; i < CardNum/2; i++)
+
+  if (Changed != null && Player1 != null && Player2 != null)
   {
-    P2Indexs[i] = rand + i + (CardNum/2);
+    StackDecks(Changed,P1Indexs,Player1,P2Indexs,Player2,setChanged);
   }
   
   return(
@@ -183,11 +254,11 @@ function Cards(CardData) {
         <hr/>
         </div>
         <div className='center'>
-          <button className='Choices' onClick={() => Option("rating",P1Indexs,P2Indexs)}>Rating</button> <br/>
-          <button className='Choices' onClick={() => Option("length",P1Indexs,P2Indexs)}>Length</button> <br/>
-          <button className='Choices' onClick={() => Option("rate",P1Indexs,P2Indexs)}>Rental Rate</button> <br/>
-          <button className='Choices' onClick={() => Option("duration",P1Indexs,P2Indexs)}>Rental Duration</button> <br/>
-          <button className='Choices' onClick={() => Option("cost",P1Indexs,P2Indexs)}>Replacement Cost</button> <br/>
+          <button className='Choices' onClick={() => Option("rating",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Rating</button> <br/>
+          <button className='Choices' onClick={() => Option("length",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Length</button> <br/>
+          <button className='Choices' onClick={() => Option("rate",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Rental Rate</button> <br/>
+          <button className='Choices' onClick={() => Option("duration",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Rental Duration</button> <br/>
+          <button className='Choices' onClick={() => Option("cost",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Replacement Cost</button> <br/>
         </div> 
       </div>
     </div>
