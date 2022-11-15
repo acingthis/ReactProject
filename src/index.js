@@ -9,21 +9,18 @@ function EndGame(Players) {
   {
     //Tie
     Winner = "Tie";
-    console.log("Tie");
     alert("The Game is a Tie");
   }
   else if (Players.Player1 > Players.Player2)
   {
     //Player1
     Winner = "Player1";
-    console.log("Player1");
     alert("PLayer 1, You have Won");
   }
   else
   {
     //Player2
     Winner = "Player2";
-    console.log("Player2");
     alert("PLayer 2, You have Won");
   }
 
@@ -34,10 +31,6 @@ function Nav(Players) {
   if (Players.start && (Players.Player1 === 0 || Players.Player2 === 0))
   {
     EndGame(Players);
-  }
-  else
-  {
-    Players.setStart(true);
   }
 
   return(
@@ -169,97 +162,88 @@ function StackDecks (choice,P1,Player1,P2,Player2,setChanged,CardData){
   {
     let P1Rating = Rating(Player1.rating);
     let P2Rating = Rating(Player2.rating);
-    console.log("rating")
     if(P1Rating > P2Rating)
     {
       P1[P1.length] = P2[0];
       P1[P1.length] = P1[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1)
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1)
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
     }
     else
     {
       P2[P2.length] = P1[0];
       P2[P2.length] = P2[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1)
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1)
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
     }
   }
   else if (choice === "length")
   {
-    console.log("length")
     if(Player1.length > Player2.length)
     {
       P1[P1.length] = P2[0];
       P1[P1.length] = P1[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1)
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1)
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
     }
     else
     {
       P2[P2.length] = P1[0];
       P2[P2.length] = P2[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1)
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1)
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
     }
   }
   else if (choice === "rate")
   {
-    console.log("rate")
     if(Player1.rentalRate > Player2.rentalRate)
     {
       P1[P1.length] = P2[0];
       P1[P1.length] = P1[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1)
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1)
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
     }
     else
     {
       P2[P2.length] = P1[0];
       P2[P2.length] = P2[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1)
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1)
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
     }
   }
   else if (choice === "duration")
   {
-    console.log("duration")
     if(Player1.rentalDuration > Player2.rentalDuration)
     {
       P1[P1.length] = P2[0];
       P1[P1.length] = P1[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1)
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1)
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
     }
     else
     {
       P2[P2.length] = P1[0];
       P2[P2.length] = P2[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1)
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1)
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
     }
   }
   else if (choice === "cost")
   {
-    console.log("cost")
     if(Player1.replacementCost > Player2.replacementCost)
     {
       P1[P1.length] = P2[0];
       P1[P1.length] = P1[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1)
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1)
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
     }
     else
     {
       P2[P2.length] = P1[0];
       P2[P2.length] = P2[0];
-      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1)
-      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1)
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
     }
-  }
-  else
-  {
-    console.log("None")
   }
   setChanged(null)
 }
@@ -295,7 +279,7 @@ function Cards(CardData) {
   if (Changed != null && Player1 != null && Player2 != null)
   {
     StackDecks(Changed,P1Indexs,Player1,P2Indexs,Player2,setChanged,CardData);
-    setChoosen(true)
+    setChoosen(true);
   }
 
 
@@ -345,12 +329,14 @@ function Container() {
 
   let CardNum = 50;
 
+  const [start, setStart] = useState(false);
+
   useEffect(() => {
-    setPlayer1(CardNum/2)
-    setPlayer2(CardNum/2)
+    setPlayer1(CardNum/2);
+    setPlayer2(CardNum/2);
+    setStart(true);
   },[])
 
-  const [start, setStart] = useState(false);
   
   return(
     <div>
