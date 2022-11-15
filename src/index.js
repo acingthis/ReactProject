@@ -74,6 +74,28 @@ function GetCard(index) {
     );
   }
 
+  if (index.setChoosen != null)
+  {
+    return (
+      <div className='CardData'>
+        <hr/> 
+        <h1>{data.title}</h1>
+        <p>{data.description}</p>
+        <hr/> 
+        <br/><br/><br/><br/>
+        <br/><br/><br/><br/>
+        <div className='center'>
+          <p className='Data'>Rating:           {data.rating}</p>
+          <p className='Data'>Length:           {data.length}</p>
+          <p className='Data'>Rental Rate:      {data.rentalRate}</p>
+          <p className='Data'>Rental Duration:  {data.rentalDuration}</p>
+          <p className='Data'>Replacement Cost: {data.replacementCost}</p>
+          <button className='Choices' onClick={() => index.setChoosen(false)}>Ok</button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className='CardData'>
       <hr/> 
@@ -129,23 +151,26 @@ function Rating(PRating)
   return RatingNum;
 }
 
-function StackDecks (choice,P1,Player1,P2,Player2,setChanged){
+function StackDecks (choice,P1,Player1,P2,Player2,setChanged,CardData){
 
   if (choice === "rating")
   {
     let P1Rating = Rating(Player1.rating);
     let P2Rating = Rating(Player2.rating);
     console.log("rating")
-    console.log(P1Rating)
     if(P1Rating > P2Rating)
     {
       P1[P1.length] = P2[0];
       P1[P1.length] = P1[0];
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1)
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1)
     }
     else
     {
       P2[P2.length] = P1[0];
       P2[P2.length] = P2[0];
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1)
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1)
     }
   }
   else if (choice === "length")
@@ -155,11 +180,15 @@ function StackDecks (choice,P1,Player1,P2,Player2,setChanged){
     {
       P1[P1.length] = P2[0];
       P1[P1.length] = P1[0];
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1)
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1)
     }
     else
     {
       P2[P2.length] = P1[0];
       P2[P2.length] = P2[0];
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1)
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1)
     }
   }
   else if (choice === "rate")
@@ -169,11 +198,15 @@ function StackDecks (choice,P1,Player1,P2,Player2,setChanged){
     {
       P1[P1.length] = P2[0];
       P1[P1.length] = P1[0];
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1)
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1)
     }
     else
     {
       P2[P2.length] = P1[0];
       P2[P2.length] = P2[0];
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1)
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1)
     }
   }
   else if (choice === "duration")
@@ -183,11 +216,15 @@ function StackDecks (choice,P1,Player1,P2,Player2,setChanged){
     {
       P1[P1.length] = P2[0];
       P1[P1.length] = P1[0];
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1)
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1)
     }
     else
     {
       P2[P2.length] = P1[0];
       P2[P2.length] = P2[0];
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1)
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1)
     }
   }
   else if (choice === "cost")
@@ -197,11 +234,15 @@ function StackDecks (choice,P1,Player1,P2,Player2,setChanged){
     {
       P1[P1.length] = P2[0];
       P1[P1.length] = P1[0];
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1)
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1)
     }
     else
     {
       P2[P2.length] = P1[0];
       P2[P2.length] = P2[0];
+      CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1)
+      CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1)
     }
   }
   else
@@ -237,32 +278,52 @@ function Cards(CardData) {
     }
   }
 
+  const [Choosen, setChoosen] = useState(false);
+
   if (Changed != null && Player1 != null && Player2 != null)
   {
-    StackDecks(Changed,P1Indexs,Player1,P2Indexs,Player2,setChanged);
+    StackDecks(Changed,P1Indexs,Player1,P2Indexs,Player2,setChanged,CardData);
+    setChoosen(true)
   }
-  
-  return(
-    <div className='Cards'>
-      <div className='Player Left'>
-        <GetCard index={P1Indexs[0]}/>
-      </div>
-      <div className='Player Right'>
-        <div className='CardData'>
-        <hr/>
-        <h2 id='RightPlayer'>Choose a value you wish to use</h2>
-        <hr/>
+
+
+  if (Choosen)
+  {
+    return(
+      <div className='Cards'>
+        <div className='Player Left'>
+          <GetCard index={P1Indexs[0]}/>
         </div>
-        <div className='center'>
-          <button className='Choices' onClick={() => Option("rating",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Rating</button> <br/>
-          <button className='Choices' onClick={() => Option("length",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Length</button> <br/>
-          <button className='Choices' onClick={() => Option("rate",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Rental Rate</button> <br/>
-          <button className='Choices' onClick={() => Option("duration",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Rental Duration</button> <br/>
-          <button className='Choices' onClick={() => Option("cost",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Replacement Cost</button> <br/>
-        </div> 
+        <div className='Player Right'>
+          <GetCard index={P2Indexs[0]} setChoosen={setChoosen}/>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+  else
+  {
+    return(
+      <div className='Cards'>
+        <div className='Player Left'>
+          <GetCard index={P1Indexs[0]}/>
+        </div>
+        <div className='Player Right'>
+          <div className='CardData'>
+          <hr/>
+          <h2 id='RightPlayer'>Choose a value you wish to use</h2>
+          <hr/>
+          </div>
+          <div className='center'>
+            <button className='Choices' onClick={() => Option("rating",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Rating</button> <br/>
+            <button className='Choices' onClick={() => Option("length",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Length</button> <br/>
+            <button className='Choices' onClick={() => Option("rate",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Rental Rate</button> <br/>
+            <button className='Choices' onClick={() => Option("duration",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Rental Duration</button> <br/>
+            <button className='Choices' onClick={() => Option("cost",P1Indexs,setPlayer1,P2Indexs,setPlayer2,setChanged)}>Replacement Cost</button> <br/>
+          </div> 
+        </div>
+      </div>
+    );
+  }
 }
 
 function Container() {
@@ -281,7 +342,7 @@ function Container() {
   return(
     <div>
       <Nav Player1={Player1} setPlayer1={setPlayer1} Player2={Player2} setPlayer2={setPlayer2}/>
-      <Cards CardNum={CardNum}/>
+      <Cards CardNum={CardNum} CurrentPlayer1={Player1} setCurrentPlayer1={setPlayer1} CurrentPlayer2={Player2} setCurrentPlayer2={setPlayer2}/>
     </div>
   );
 }

@@ -95,3 +95,12 @@ ul {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+.Choosen {
+    height: 60px;
+    width: 30%;
+    background: none;
+    color: white;
+    font-size: large;
+    border: none;
+}
