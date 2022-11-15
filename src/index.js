@@ -8,19 +8,16 @@ function EndGame(Players) {
   if (Players.Player1 === Players.Player2)
   {
     //Tie
-    Winner = "Tie";
     alert("The Game is a Tie");
   }
   else if (Players.Player1 > Players.Player2)
   {
     //Player1
-    Winner = "Player1";
     alert("PLayer 1, You have Won");
   }
   else
   {
     //Player2
-    Winner = "Player2";
     alert("PLayer 2, You have Won");
   }
 
@@ -61,15 +58,12 @@ function GetCard(index) {
   const [data, setData] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
     fetch("http://localhost:8080/home/filmId/" + index.index)
         .then((res) => res.json())
         .then((result) => {
             setData(result);
             setLoaded(true);
     })
-  },[]);
-
   if (!loaded)
   {
     return (
@@ -178,13 +172,6 @@ function ShiftIndexs(P1,P2,CardData,setP1,setP2) {
     }
   }
 
-  console.log("_____")
-
-  console.log("P1")
-  console.log(Player1)
-  console.log("P2")
-  console.log(Player2)
-
   setP1(Player1);
   setP2(Player2);
 }
@@ -195,7 +182,6 @@ function P1Win(P1,P2,CardData,setP1,setP2)
   P1[P1.length] = P1[0];
   CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
   CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
-  console.log("P1 Wins");
   ShiftIndexs(P1,P2,CardData,setP1,setP2);
 }
 
@@ -205,7 +191,6 @@ function P2Win(P1,P2,CardData,setP1,setP2)
   P2[P2.length] = P2[0];
   CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
   CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
-  console.log("P2 Wins");
   ShiftIndexs(P1,P2,CardData,setP1,setP2);
 }
 
@@ -297,9 +282,12 @@ function Cards(CardData) {
     {
       P2Indexs[i] = rand + i + (CardNum/2);
     }
+    setSetup(true);
   }
 
   const [Choosen, setChoosen] = useState(false);
+
+  let Player1Index = P1Indexs[0];
 
   if (Changed != null && Player1 != null && Player2 != null)
   {
@@ -314,7 +302,7 @@ function Cards(CardData) {
     return(
       <div className='Cards'>
         <div className='Player Left'>
-          <GetCard index={P1Indexs[0]}/>
+          <GetCard index={Player1Index}/>
         </div>
         <div className='Player Right'>
           <GetCard index={P2Indexs[0]} setChoosen={setChoosen}/>
@@ -327,7 +315,7 @@ function Cards(CardData) {
     return(
       <div className='Cards'>
         <div className='Player Left'>
-          <GetCard index={P1Indexs[0]}/>
+          <GetCard index={Player1Index}/>
         </div>
         <div className='Player Right'>
           <div className='CardData'>
