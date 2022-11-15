@@ -40,7 +40,7 @@ function Nav(Players) {
         <li className='PlayerCount'><p>Player 2: {Players.Player2}</p></li>
         <li className="TieCount"><p>Tie Stack: </p></li>
         <li className="Winner"><p>Winner: {Winner}</p></li>
-        <li className='EndGameButton'><button onClick={() => EndGame(Players)}>End Game</button></li>
+        <li><button className='EndGameButton' onClick={() => EndGame(Players)}>End Game</button></li>
       </ul>
     </div>
   );
@@ -79,6 +79,7 @@ function GetCard(index) {
     );
   }
 
+  //Player 2 display
   if (index.setChoosen != null)
   {
     return (
@@ -101,6 +102,7 @@ function GetCard(index) {
     );
   }
 
+  //Player 1 display
   return (
     <div className='CardData'>
       <hr/> 
@@ -156,23 +158,58 @@ function Rating(PRating)
   return RatingNum;
 }
 
-function P1Win(P1,P2,CardData)
+function ShiftIndexs(P1,P2,CardData,setP1,setP2) {
+
+  let Player1 = [];
+  let Player2 = [];
+
+  for(let i = 0; i < P1.length-1;i++)
+  {
+    if (P1[i+1] != undefined)
+    {
+      Player1[i] = P1[i+1];
+    }
+  }
+  for(let i = 0; i < P2.length-1;i++)
+  {
+    if (P2[i+1] != undefined)
+    {
+      Player2[i] = P2[i+1];
+    }
+  }
+
+  console.log("_____")
+
+  console.log("P1")
+  console.log(Player1)
+  console.log("P2")
+  console.log(Player2)
+
+  setP1(Player1);
+  setP2(Player2);
+}
+
+function P1Win(P1,P2,CardData,setP1,setP2)
 {
   P1[P1.length] = P2[0];
   P1[P1.length] = P1[0];
   CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
   CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
+  console.log("P1 Wins");
+  ShiftIndexs(P1,P2,CardData,setP1,setP2);
 }
 
-function P2Win(P1,P2,CardData)
+function P2Win(P1,P2,CardData,setP1,setP2)
 {
   P2[P2.length] = P1[0];
   P2[P2.length] = P2[0];
   CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
   CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
+  console.log("P2 Wins");
+  ShiftIndexs(P1,P2,CardData,setP1,setP2);
 }
 
-function StackDecks (choice,P1,Player1,P2,Player2,setChanged,CardData){
+function StackDecks (choice,P1,setP1,Player1,P2,setP2,Player2,setChanged,CardData) {
 
   if (choice === "rating")
   {
@@ -180,59 +217,60 @@ function StackDecks (choice,P1,Player1,P2,Player2,setChanged,CardData){
     let P2Rating = Rating(Player2.rating);
     if(P1Rating > P2Rating)
     {
-      P1Win(P1,P2,CardData)
+      P1Win(P1,P2,CardData,setP1,setP2)
     }
     else
     {
-      P2Win(P1,P2,CardData)
+      P2Win(P1,P2,CardData,setP1,setP2)
     }
   }
   else if (choice === "length")
   {
     if(Player1.length > Player2.length)
     {
-      P1Win(P1,P2,CardData)
+      P1Win(P1,P2,CardData,setP1,setP2)
     }
     else
     {
-      P2Win(P1,P2,CardData)
+      P2Win(P1,P2,CardData,setP1,setP2)
     }
   }
   else if (choice === "rate")
   {
     if(Player1.rentalRate > Player2.rentalRate)
     {
-      P1Win(P1,P2,CardData)
+      P1Win(P1,P2,CardData,setP1,setP2)
     }
     else
     {
-      P2Win(P1,P2,CardData)
+      P2Win(P1,P2,CardData,setP1,setP2)
     }
   }
   else if (choice === "duration")
   {
     if(Player1.rentalDuration > Player2.rentalDuration)
     {
-      P1Win(P1,P2,CardData)
+      P1Win(P1,P2,CardData,setP1,setP2)
     }
     else
     {
-      P2Win(P1,P2,CardData)
+      P2Win(P1,P2,CardData,setP1,setP2)
     }
   }
   else if (choice === "cost")
   {
     if(Player1.replacementCost > Player2.replacementCost)
     {
-      P1Win(P1,P2,CardData)
+      P1Win(P1,P2,CardData,setP1,setP2)
     }
     else
     {
-      P2Win(P1,P2,CardData)
+      P2Win(P1,P2,CardData,setP1,setP2)
     }
   }
   setChanged(null)
 }
+
 
 function Cards(CardData) {
   
@@ -240,13 +278,14 @@ function Cards(CardData) {
   const [Player2, setPlayer2] = useState(null);
   const [Changed, setChanged] = useState(null);
 
-  const P1Indexs = {};
-  const P2Indexs = {};
+  const [P1Indexs, setP1Indexs] = useState([]);
+  const [P2Indexs, setP2Indexs] = useState([]);
 
   const [Setup, setSetup] = useState(false);
 
   if (!Setup)
   {
+
     let CardNum = CardData.CardNum;
     let rand = Math.floor( Math.random() * ((1000 -CardNum) - 1) + 1);
 
@@ -264,8 +303,9 @@ function Cards(CardData) {
 
   if (Changed != null && Player1 != null && Player2 != null)
   {
-    StackDecks(Changed,P1Indexs,Player1,P2Indexs,Player2,setChanged,CardData);
+    StackDecks(Changed,P1Indexs,setP1Indexs,Player1,P2Indexs,setP2Indexs,Player2,setChanged,CardData);
     setChoosen(true);
+    setSetup(true);
   }
 
 

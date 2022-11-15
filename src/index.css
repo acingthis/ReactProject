@@ -33,6 +33,18 @@ ul {
 .EndGameButton {
   float: right;
   padding: 25px 20px;
+  background: rgb(16, 17, 22);
+  color: white;
+  font-size: large;
+  border: none;
+}
+
+.EndGameButton:hover {
+  background: rgb(10, 11, 14);
+}
+
+.EndGameButton:active {
+  background: rgb(0, 0, 0);
 }
 
 
