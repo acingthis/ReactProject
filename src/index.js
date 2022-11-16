@@ -46,7 +46,7 @@ function Nav(Players) {
 
 function FetchAPI(index,setPlayer) {
 
-    fetch("http://localhost:8080/home/filmId/" + index)
+    fetch("https://sakilafilms-1668596786790.azurewebsites.net/home/filmId/" + index)
         .then((res) => res.json())
         .then((result) => {
             setPlayer(result);
@@ -58,7 +58,7 @@ function GetCard(index) {
   const [data, setData] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
-    fetch("http://localhost:8080/home/filmId/" + index.index)
+    fetch("https://sakilafilms-1668596786790.azurewebsites.net/home/filmId/" + index.index)
         .then((res) => res.json())
         .then((result) => {
             setData(result);
@@ -159,14 +159,14 @@ function ShiftIndexs(P1,P2,CardData,setP1,setP2) {
 
   for(let i = 0; i < P1.length-1;i++)
   {
-    if (P1[i+1] != undefined)
+    if (P1[i+1] !== undefined)
     {
       Player1[i] = P1[i+1];
     }
   }
   for(let i = 0; i < P2.length-1;i++)
   {
-    if (P2[i+1] != undefined)
+    if (P2[i+1] !== undefined)
     {
       Player2[i] = P2[i+1];
     }
@@ -315,7 +315,7 @@ function Cards(CardData) {
     return(
       <div className='Cards'>
         <div className='Player Left'>
-          <GetCard index={Player1Index}/>
+          <GetCard index={P1Indexs[0]}/>
         </div>
         <div className='Player Right'>
           <div className='CardData'>
