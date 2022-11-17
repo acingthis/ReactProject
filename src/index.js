@@ -183,6 +183,7 @@ function P1Win(P1,P2,CardData,setP1,setP2)
   CardData.setCurrentPlayer1(CardData.CurrentPlayer1 + 1);
   CardData.setCurrentPlayer2(CardData.CurrentPlayer2 - 1);
   ShiftIndexs(P1,P2,CardData,setP1,setP2);
+  alert("Player 1 wins player 2's card");
 }
 
 function P2Win(P1,P2,CardData,setP1,setP2)
@@ -192,6 +193,7 @@ function P2Win(P1,P2,CardData,setP1,setP2)
   CardData.setCurrentPlayer1(CardData.CurrentPlayer1 - 1);
   CardData.setCurrentPlayer2(CardData.CurrentPlayer2 + 1);
   ShiftIndexs(P1,P2,CardData,setP1,setP2);
+  alert("Player 2 wins player 1's card");
 }
 
 function StackDecks (choice,P1,setP1,Player1,P2,setP2,Player2,setChanged,CardData) {
@@ -270,30 +272,28 @@ function Cards(CardData) {
 
   if (!Setup)
   {
+    let rand = Math.floor( Math.random() * ((1000 - CardData.CardNum) - 1) + 1);
 
-    let CardNum = CardData.CardNum;
-    let rand = Math.floor( Math.random() * ((1000 -CardNum) - 1) + 1);
-
-    for(let i = 0; i < CardNum/2; i++)
+    for(let i = 0; i < CardData.CardNum/2; i++)
     {
       P1Indexs[i] = rand + i;
     }
-    for(let i = 0; i < CardNum/2; i++)
+    for(let i = 0; i < CardData.CardNum/2; i++)
     {
-      P2Indexs[i] = rand + i + (CardNum/2);
+      P2Indexs[i] = rand + i + (CardData.CardNum/2);
     }
     setSetup(true);
   }
 
   const [Choosen, setChoosen] = useState(false);
 
-  let Player1Index = P1Indexs[0];
+  const [Player1Index, setPlayer1Index] = useState(0);
 
   if (Changed != null && Player1 != null && Player2 != null)
   {
     StackDecks(Changed,P1Indexs,setP1Indexs,Player1,P2Indexs,setP2Indexs,Player2,setChanged,CardData);
     setChoosen(true);
-    setSetup(true);
+    setPlayer1Index(P1Indexs[0]);
   }
 
 
@@ -336,7 +336,7 @@ function Cards(CardData) {
   }
 }
 
-function Container() {
+export default function Container() {
 
   const [Player1, setPlayer1] = useState(0);
   const [Player2, setPlayer2] = useState(0);
@@ -359,10 +359,6 @@ function Container() {
     </div>
   );
 }
-
-
-//export default Container;
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<Container />);
